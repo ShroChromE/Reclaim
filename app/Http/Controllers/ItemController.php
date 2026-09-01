@@ -19,7 +19,7 @@ class ItemController extends Controller
      */
     public function create()
     {
-        //
+        return view('items.create');
     }
 
     /**
@@ -35,7 +35,7 @@ class ItemController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return view('items.show');
     }
 
     /**
@@ -43,7 +43,7 @@ class ItemController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('items.edit');
     }
 
     /**
