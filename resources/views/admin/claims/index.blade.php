@@ -1,0 +1,1 @@
+<h1>Admin Claims Index Page</h1>
