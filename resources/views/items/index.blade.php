@@ -135,19 +135,17 @@
                 {{-- BUTTON --}}
                 <div class="flex items-center gap-[60px] mt-[55px]">
 
-                    <a href="#"
-                       class="w-[255px] h-[92px]
-                              rounded-[24px]
-                              bg-[#ED6D3B]
-                              border border-gray-500
-                              text-white
-                              flex items-center justify-center
-                              text-[20px] font-bold
-                              hover:bg-[#DF6030]
-                              transition">
-
+                    <a href="{{ route('items.detail') }}"
+                        class="w-[255px] h-[92px]
+                        rounded-[24px]
+                        bg-[#ED6D3B]
+                        border border-gray-500
+                      text-white
+                        flex items-center justify-center
+                        text-[20px] font-bold
+                      hover:bg-[#DF6030]
+                        transition">    
                         Lapor barang hilang
-
                     </a>
 
 

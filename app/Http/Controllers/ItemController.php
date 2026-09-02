@@ -24,6 +24,21 @@ class ItemController extends Controller
         ));
     }
 
+     public function detail()
+    {
+        $item = [
+            'name' => 'Dompet Hitam',
+            'status' => 'Hilang',
+            'category' => 'Dompet',
+            'location' => 'Kelas XII TKJ 3',
+            'date' => '18 Mei 2024',
+            'time' => '10:30 WIB',
+            'reporter' => 'William T.',
+        ];
+
+        return view('items.detail', compact('item'));
+    }
+
     public function index()
     {
         return view('items.list');
