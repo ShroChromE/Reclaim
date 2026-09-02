@@ -9,8 +9,11 @@ use App\Http\Controllers\Admin\ClaimController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use Illuminate\Support\Facades\Route;
 
+
 // Public homepage
 Route::get('/', [ItemController::class, 'homepage'])->name('homepage');
+Route::get('/lapor-barang-hilang', [ItemController::class, 'detail'])
+    ->name('items.detail');
 
 Route::middleware('auth')->group(function () {
 
