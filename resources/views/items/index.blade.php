@@ -39,7 +39,7 @@
                     <p class="text-[11px] text-gray-400">Dashboard untuk admin</p>
                 </a>
 
-                <a href="{{ route('reports.index') }}"
+                <a href="{{ route('items.index') }}"
                    class="block px-10 py-3 rounded-xl transition
                           {{ request()->routeIs('my-reports.index') ? 'bg-[#303435]' : 'hover:bg-[#303435]' }}">
                     <p class="text-[15px] font-semibold">My Reports & Claims</p>

@@ -18,7 +18,7 @@
                 Cari Barang
             </a>
 
-            <a href="{{ route('items.show') }}"
+            <a href="#"
                class="px-7 py-5 text-[15px] font-semibold transition
                       {{ request()->routeIs('items.detail') ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900' }}">
                 Laporan Hilang
