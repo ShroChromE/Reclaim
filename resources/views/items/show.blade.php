@@ -161,7 +161,7 @@
 
 
                 {{-- DETAIL BARANG --}}
-                <a href="{{ route('items.show') }}"
+                <a href="#"
                    class="block px-10 py-3
                           rounded-xl
                           hover:bg-[#303435]
@@ -281,7 +281,7 @@
                                    font-bold
                                    text-gray-900">
 
-                            {{ $item['name'] }}
+                            {{ $item->name }}
 
                         </h2>
 
@@ -290,7 +290,7 @@
                                   font-semibold
                                   text-[#EE6D3A]">
 
-                            {{ $item['status'] }}
+                            {{ $item->status }}
 
                         </p>
 
@@ -317,7 +317,7 @@
                                          font-semibold
                                          text-gray-900">
 
-                                {{ $item['category'] }}
+                                {{ $item->category }}
 
                             </span>
 
@@ -339,7 +339,7 @@
                                          font-semibold
                                          text-gray-900">
 
-                                {{ $item['location'] }}
+                                {{ $item->location }}
 
                             </span>
 
@@ -361,7 +361,7 @@
                                          font-semibold
                                          text-gray-900">
 
-                                {{ $item['date'] }}
+                                {{ $item->date }}
 
                             </span>
 
@@ -383,7 +383,7 @@
                                          font-semibold
                                          text-gray-900">
 
-                                {{ $item['time'] }}
+                                {{ $item->time }}
 
                             </span>
 
@@ -405,7 +405,7 @@
                                          font-semibold
                                          text-gray-900">
 
-                                {{ $item['reporter'] }}
+                                {{ $item->reporter }}
 
                             </span>
 
