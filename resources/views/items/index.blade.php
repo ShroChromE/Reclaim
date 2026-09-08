@@ -1,301 +1,211 @@
 @extends('layouts.app')
 
-@section('title', 'Reclaim - Lost & Found')
+@section('title', 'Lost & Found - Reclaim')
 
 @section('content')
 
-    {{-- NAVBAR --}}
-    <header class="w-full border-b border-gray-200">
-        <div class="h-[114px] px-10 flex items-center justify-between">
+<div class="min-h-screen bg-white">
 
-            {{-- LOGO --}}
-            <div class="flex items-center gap-4">
+    <x-navbar />
 
-                <div class="w-14 h-14 rounded-2xl bg-[#EE6D3A]
-                            flex items-center justify-center
-                            text-white text-2xl font-bold">
-                    R
-                </div>
-
-                <div>
-                    <h1 class="text-[25px] font-bold leading-tight">
-                        RECLAIM
-                    </h1>
-
-                    <p class="text-[13px] text-gray-500">
-                        Lost & Found - Sekolah
-                    </p>
-                </div>
-
+    <div class="flex">
+        <aside class="w-[276px] min-h-[calc(100vh-114px)] bg-[#202324] text-white px-2 py-6 flex-shrink-0">
+            
+            <div class="px-5 mb-8">
+                <h2 class="text-[22px] font-bold">RECLAIM</h2>
+                <p class="text-[11px] text-gray-400 font-semibold">LOST & FOUND</p>
             </div>
 
-
-            {{-- NAVIGATION --}}
-            <nav class="w-[532px] h-[60px] bg-[#EFF8F1]
-                       rounded-[15px]
-                       flex items-center justify-around px-3">
-
-                <a href="{{ route('homepage') }}"
-                   class="px-7 py-5 rounded-xl
-                          text-[15px] font-semibold text-gray-900">
-                    Cari Barang
+            <div class="space-y-2">
+                
+                <a href="{{ route('items.index') }}"
+                   class="block px-10 py-3 rounded-xl transition
+                          {{ request()->routeIs('items.index') ? 'bg-[#303435]' : 'hover:bg-[#303435]' }}">
+                    <p class="text-[15px] font-semibold">Lost & Found</p>
+                    <p class="text-[11px] text-gray-400">List barang yang hilang & ditemukan</p>
                 </a>
 
-                <a href="#"
-                   class="px-7 py-5 rounded-xl
-                          text-[15px] font-semibold text-gray-500
-                          hover:text-gray-900 transition">
-                    Laporan Hilang
+                <a href="{{ route('admin.items.index') }}"
+                   class="block px-10 py-3 rounded-xl transition
+                          {{ request()->routeIs('admin.items.index') ? 'bg-[#303435]' : 'hover:bg-[#303435]' }}">
+                    <p class="text-[15px] font-semibold">Manage Items & Claims</p>
+                    <p class="text-[11px] text-gray-400">Kelola barang & klaim masuk</p>
                 </a>
 
-                <a href="#"
-                   class="px-7 py-5 rounded-xl
-                          text-[15px] font-semibold text-gray-500
-                          hover:text-gray-900 transition">
-                    Laporan Ditemukan
+                <a href="{{ route('admin.dashboard') }}"
+                   class="block px-10 py-3 rounded-xl transition
+                          {{ request()->routeIs('admin.dashboard') ? 'bg-[#303435]' : 'hover:bg-[#303435]' }}">
+                    <p class="text-[15px] font-semibold">Admin Dashboard</p>
+                    <p class="text-[11px] text-gray-400">Dashboard untuk admin</p>
                 </a>
 
-            </nav>
-
-
-            {{-- LOGIN / REGISTER --}}
-            <div class="flex items-center gap-3">
-
-                <a href="#"
-                   class="h-[60px] px-6
-                          rounded-xl border border-gray-300
-                          flex items-center justify-center
-                          text-[15px] font-semibold
-                          hover:bg-gray-50 transition">
-                    Masuk
+                <a href="{{ route('reports.index') }}"
+                   class="block px-10 py-3 rounded-xl transition
+                          {{ request()->routeIs('my-reports.index') ? 'bg-[#303435]' : 'hover:bg-[#303435]' }}">
+                    <p class="text-[15px] font-semibold">My Reports & Claims</p>
+                    <p class="text-[11px] text-gray-400">Laporan & klaim saya</p>
                 </a>
 
-                <a href="#"
-                   class="h-[60px] px-6
-                          rounded-xl bg-[#EE6D3A]
-                          text-white
-                          flex items-center justify-center
-                          text-[15px] font-semibold
-                          hover:bg-[#DD5F30] transition">
-                    Daftar
+                <a href="{{ route('items.create') }}"
+                   class="block px-10 py-3 rounded-xl transition
+                          {{ request()->routeIs('items.create') ? 'bg-[#303435]' : 'hover:bg-[#303435]' }}">
+                    <p class="text-[15px] font-semibold">Report Item</p>
+                    <p class="text-[11px] text-gray-400">Laporkan barang hilang / ditemukan</p>
                 </a>
 
+                <a href="{{ route('dashboard') }}"
+                   class="block px-10 py-3 rounded-xl transition
+                          {{ request()->routeIs('dashboard') ? 'bg-[#303435]' : 'hover:bg-[#303435]' }}">
+                    <p class="text-[15px] font-semibold">Dashboard</p>
+                    <p class="text-[11px] text-gray-400">Dashboard umum</p>
+                </a>
             </div>
+        </aside>
 
-        </div>
-    </header>
-
-
-    {{-- HERO --}}
-    <main>
-
-        <section class="max-w-[1910px] min-h-[760px]
-                        mx-auto
-                        grid grid-cols-2
-                        items-center
-                        gap-[55px]
-                        px-[25px]
-                        py-[100px]">
-
-
-            {{-- HERO LEFT --}}
-            <div class="pl-5">
-
-                <h2 class="text-[54px]
-                           leading-[1.15]
-                           tracking-[-1.5px]
-                           font-bold
-                           max-w-[700px]">
-
-                    Kehilangan barang?
-                    <br>
-
-                    Jangan cuma
-                    <span class="text-[#E96B38]">
-                        berharap.
-                    </span>
-
-                </h2>
-
-
-                <p class="mt-[35px]
-                          max-w-[650px]
-                          text-[25px]
-                          leading-[1.25]
-                          text-[#7C827F]">
-
-                    Reclaim mengumpulkan semua laporan barang
-                    hilang dan temuan di satu papan, supaya barangmu
-                    lebih cepat balik ke tangan yang benar —
-                    tanpa mading, tanpa nebak-nebak grup chat mana.
-
+        <main class="flex-1 min-h-[calc(100vh-114px)] px-[60px] py-[50px]">
+            <div class="max-w-[1600px] mx-auto">
+                <h1 class="text-[34px] font-bold text-gray-900">Lost & Found</h1>
+                <p class="mt-2 text-[15px] text-gray-500">
+                    Daftar barang hilang dan ditemukan di lingkungan sekolah.
                 </p>
 
+                <form method="GET" action="{{ route('items.index') }}"
+                      class="mt-8 bg-[#EFF8F1] rounded-[15px] p-5
+                             flex flex-col md:flex-row gap-3 items-stretch">
 
-                {{-- BUTTON --}}
-                <div class="flex items-center gap-[60px] mt-[55px]">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                           placeholder="Cari nama barang, lokasi, atau kategori..."
+                           class="flex-1 h-[55px] rounded-xl border border-gray-200 px-4
+                                  text-[14px] focus:outline-none focus:ring-2 focus:ring-[#EE6D3A]">
 
-                    <a href="#"
-                       class="w-[255px] h-[92px]
-                              rounded-[24px]
-                              bg-[#ED6D3B]
-                              border border-gray-500
-                              text-white
-                              flex items-center justify-center
-                              text-[20px] font-bold
-                              hover:bg-[#DF6030]
-                              transition">
+                    <select name="category"
+                            class="h-[55px] rounded-xl border border-gray-200 px-4
+                                   text-[14px] font-semibold bg-white">
+                        <option value="">Semua Kategori</option>
+                        <option value="elektronik">Elektronik</option>
+                        <option value="aksesoris">Aksesoris</option>
+                        <option value="tas">Tas</option>
+                    </select>
 
-                        Lapor barang hilang
+                    <select name="status"
+                            class="h-[55px] rounded-xl border border-gray-200 px-4
+                                   text-[14px] font-semibold bg-white">
+                        <option value="">Semua Status</option>
+                        <option value="lost">Hilang</option>
+                        <option value="found">Ditemukan</option>
+                        <option value="returned">Sudah Dikembalikan</option>
+                    </select>
 
-                    </a>
+                    <button type="submit"
+                            class="h-[55px] px-8 rounded-xl bg-[#EE6D3A] text-white
+                                   text-[14px] font-bold hover:bg-[#DD5F30] transition">
+                        Cari
+                    </button>
 
+                </form>
 
-                    <a href="#"
-                       class="w-[255px] h-[92px]
-                              rounded-[24px]
-                              bg-white
-                              border border-gray-500
-                              text-[#ED6D3B]
-                              flex items-center justify-center
-                              text-[20px] font-bold
-                              hover:bg-gray-50
-                              transition">
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-5">
 
-                        Lapor barang Temuan
+                    <div class="border border-gray-200 rounded-[15px] p-6">
+                        <div class="flex items-baseline gap-3">
+                            <span class="text-[32px] font-bold text-gray-900">{{ $totalEntries }}</span>
+                            <span class="text-[15px] font-semibold text-gray-900">Total Barang</span>
+                        </div>
+                        <p class="mt-1 text-[13px] text-gray-500">Semua barang terdaftar</p>
+                    </div>
 
-                    </a>
+                    <div class="border border-gray-200 rounded-[15px] p-6">
+                        <div class="flex items-baseline gap-3">
+                            <span class="text-[32px] font-bold text-gray-900">{{ $lostItems }}</span>
+                            <span class="text-[15px] font-semibold text-gray-900">Hilang</span>
+                        </div>
+                        <p class="mt-1 text-[13px] text-gray-500">Barang yang hilang</p>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-[15px] p-6">
+                        <div class="flex items-baseline gap-3">
+                            <span class="text-[32px] font-bold text-gray-900">{{ $foundItems }}</span>
+                            <span class="text-[15px] font-semibold text-gray-900">Ditemukan</span>
+                        </div>
+                        <p class="mt-1 text-[13px] text-gray-500">Barang yang ditemukan</p>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-[15px] p-6">
+                        <div class="flex items-baseline gap-3">
+                            <span class="text-[32px] font-bold text-gray-900">{{ $returnedItems }}</span>
+                            <span class="text-[15px] font-semibold text-gray-900">Sudah Dikembalikan</span>
+                        </div>
+                        <p class="mt-1 text-[13px] text-gray-500">Barang sudah kembali</p>
+                    </div>
 
                 </div>
 
+                <div class="mt-10 flex gap-8 border-b border-gray-200">
+                    @php
+                        $tabs = [
+                            '' => 'Semua',
+                            'lost' => 'Hilang',
+                            'found' => 'Ditemukan',
+                            'returned' => 'Sudah Dikembalikan',
+                        ];
+                    @endphp
+
+                    @foreach ($tabs as $value => $label)
+                        <a href="{{ route('items.index', array_filter(['status' => $value ?: null, 'search' => request('search')])) }}"
+                           class="pb-4 text-[15px] font-semibold transition
+                                  {{ request('status', '') === $value
+                                        ? 'text-gray-900 border-b-2 border-[#EE6D3A]'
+                                        : 'text-gray-500 hover:text-gray-900' }}">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+
+                <div class="mt-6">
+                    <div class="grid grid-cols-6 px-2 py-3 text-[13px] font-semibold text-gray-500 border-b border-gray-200">
+                        <span>Barang</span>
+                        <span>Jenis</span>
+                        <span>Lokasi</span>
+                        <span>Tanggal</span>
+                        <span>Status</span>
+                        <span>Aksi</span>
+                    </div>
+                    @forelse ($items as $item)
+                        <div class="grid grid-cols-6 items-center px-2 py-5 border-b border-gray-100">
+                            <span class="text-[15px] font-bold text-gray-900">
+                                {{ $item->name }}
+                            </span>
+                            <span class="text-[14px] font-semibold
+                                         {{ $item->type === 'lost' ? 'text-[#EE6D3A]' : 'text-green-600' }}">
+                                {{ $item->type === 'lost' ? 'Hilang' : 'Ditemukan' }}
+                            </span>
+                            <span class="text-[14px] text-gray-700">{{ $item->location }}</span>
+                            <span class="text-[14px] text-gray-700">
+                                {{ $item->date->format('d M Y') }}
+                            </span>
+                            <span class="text-[14px] text-gray-500">
+                                {{ $item->status_label }}
+                            </span>
+                            <a href="{{ route('items.show', $item->id) }}"
+                               class="inline-block h-[42px] px-5 rounded-lg border border-gray-300
+                                      flex items-center justify-center text-[13px] font-semibold
+                                      hover:bg-gray-50 transition w-fit">
+                                Lihat Detail
+                            </a>
+                        </div>
+                    @empty
+                        <p class="py-10 text-center text-gray-500 text-[14px]">
+                            Belum ada barang yang cocok dengan pencarian ini.
+                        </p>
+                    @endforelse
+                </div>
+
+                <div class="mt-6">
+                    {{ $items->links() }}
+                </div>
             </div>
-
-
-            {{-- PAPAN RECLAIM --}}
-            <div class="w-full max-w-[710px]
-                        min-h-[390px]
-                        bg-[#F1FAF3]
-                        rounded-[25px]
-                        px-[60px]
-                        py-[48px]">
-
-                {{-- HEADER CARD --}}
-                <div class="flex items-center justify-between mb-[45px]">
-
-                    <h3 class="text-[25px]
-                               font-bold
-                               text-[#777E7A]">
-
-                        PAPAN RECLAIM
-
-                    </h3>
-
-                    <span class="text-[23px]
-                                 font-bold
-                                 text-[#777E7A]">
-
-                        {{ $totalEntries }} ENTRI
-
-                    </span>
-
-                </div>
-
-
-                {{-- STATISTICS --}}
-                <div class="w-full">
-
-                    {{-- HILANG --}}
-                    <div class="h-[70px]
-                                flex items-center justify-between
-                                border-b border-[#ED6D3B]">
-
-                        <span class="text-[21px]
-                                     font-medium
-                                     text-[#ED6D3B]">
-
-                            Hilang
-
-                        </span>
-
-                        <span class="text-[30px]
-                                     font-medium
-                                     text-gray-900
-                                     pr-[25px]">
-
-                            {{ $lostItems }}
-
-                        </span>
-
-                    </div>
-
-
-                    {{-- DITEMUKAN --}}
-                    <div class="h-[70px]
-                                flex items-center justify-between
-                                border-b border-[#ED6D3B]">
-
-                        <span class="text-[21px]
-                                     font-medium
-                                     text-[#ED6D3B]">
-
-                            Ditemukan
-
-                        </span>
-
-                        <span class="text-[30px]
-                                     font-medium
-                                     text-gray-900
-                                     pr-[25px]">
-
-                            {{ $foundItems }}
-
-                        </span>
-
-                    </div>
-
-
-                    {{-- DIKEMBALIKAN --}}
-                    <div class="h-[70px]
-                                flex items-center justify-between">
-
-                        <span class="text-[21px]
-                                     font-medium
-                                     text-[#ED6D3B]">
-
-                            Sudah Dikembalikan
-
-                        </span>
-
-                        <span class="text-[30px]
-                                     font-medium
-                                     text-gray-900
-                                     pr-[25px]">
-
-                            {{ $returnedItems }}
-
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    {{-- FOOTER --}}
-    <footer class="text-center
-                   text-[#68736E]
-                   text-[24px]
-                   px-5
-                   pt-[70px]
-                   pb-[45px]">
-
-        Reclaim — dibuat untuk membantu barang kembali ke pemiliknya.
-
-    </footer>
+        </main>
+    </div>
+</div>
 
 @endsection
