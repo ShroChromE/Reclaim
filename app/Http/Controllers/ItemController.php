@@ -70,9 +70,9 @@ class ItemController extends Controller
         ));
     }
 
-     public function detail()
+    public function detail()
     {
-        $item = [
+        $item = (object) [
             'name' => 'Dompet Hitam',
             'status' => 'Hilang',
             'category' => 'Dompet',
@@ -83,5 +83,30 @@ class ItemController extends Controller
         ];
 
         return view('items.show', compact('item'));
+    }
+
+    public function create()
+    {
+        return view('items.create');
+    }
+
+    public function store(Request $request)
+    {
+        //
+    }
+
+    public function edit(string $id)
+    {
+        return view('items.edit');
+    }
+
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    public function destroy(string $id)
+    {
+        //
     }
 }

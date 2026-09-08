@@ -135,7 +135,7 @@
                 {{-- BUTTON --}}
                 <div class="flex items-center gap-[60px] mt-[55px]">
 
-                    <a href="{{ route('items.show') }}"
+                    <a href="#"
                         class="w-[255px] h-[92px]
                         rounded-[24px]
                         bg-[#ED6D3B]
