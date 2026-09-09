@@ -12,7 +12,6 @@
 <body class="font-sans antialiased bg-white text-gray-900">
     <div class="min-h-screen">
         @auth
-            @include('layouts.navigation')
         @endauth
 
         @yield('content')

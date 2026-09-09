@@ -4,6 +4,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Admin\ManageController;
 use App\Http\Controllers\Admin\ClaimController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
@@ -27,6 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/items/{item}', [ItemController::class, 'update'])->name('items.update');
     Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
     Route::get('/items/{item}', [ItemController::class, 'detail'])->name('items.show');
+
+    Route::get('/my-reports', [ReportController::class, 'index'])->name('my-reports.index');
 
     // Admin
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
