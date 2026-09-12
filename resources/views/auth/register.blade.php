@@ -10,10 +10,8 @@
 
     <div class="min-h-screen flex">
 
-        <div class="hidden md:flex md:w-1/2 bg-emerald-50 flex-col justify-center items-center p-12">
-            <div class="text-orange-500 text-6xl font-bold mb-8">R</div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2 text-center">Buat akun Reclaim</h1>
-            <p class="text-gray-500 text-center">Satu akun untuk membantu barang kembali</p>
+        <div class="hidden md:block md:w-1/2"
+             style="background-image: url('{{ asset('images/auth/register-bg.jpg') }}'); background-size: 100% 100%; background-position: center;">
         </div>
 
         <div class="w-full md:w-1/2 flex items-center justify-center p-8 bg-white">

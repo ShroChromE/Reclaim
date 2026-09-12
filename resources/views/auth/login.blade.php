@@ -10,10 +10,8 @@
 
     <div class="min-h-screen flex">
 
-        <div class="hidden md:flex md:w-1/2 bg-gray-900 flex-col justify-center p-16">
-            <div class="text-white font-bold tracking-widest mb-10">RECLAIM</div>
-            <h1 class="text-4xl font-bold text-white mb-4">Kehilangan barang?</h1>
-            <p class="text-gray-400">Laporkan dan temukan kembali barangmu</p>
+        <div class="hidden md:block md:w-1/2"
+            style="background-image: url('{{ asset('images/auth/login-bg.jpg') }}'); background-size: 100% 100%; background-position: center;">
         </div>
 
         <div class="w-full md:w-1/2 flex items-center justify-center p-8 bg-white">
@@ -30,11 +28,19 @@
                     @csrf
 
                     <div class="mb-4">
-                        <x-input-label for="login" value="Email atau Username" />
-                        <x-text-input id="login" class="block mt-1 w-full" type="text" name="login"
-                            :value="old('login')" required autofocus
-                            placeholder="Masukkan email atau username" />
-                        <x-input-error :messages="$errors->get('login')" class="mt-2" />
+                        <x-input-label for="email" value="Email" />
+                        <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
+                            :value="old('email')" required autofocus autocomplete="username"
+                            placeholder="Masukkan email" />
+                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    </div>
+
+                    <div class="mb-4">
+                        <x-input-label for="username" value="Username" />
+                        <x-text-input id="username" class="block mt-1 w-full" type="text" name="username"
+                            :value="old('username')"
+                            placeholder="Masukkan username" />
+                        <x-input-error :messages="$errors->get('username')" class="mt-2" />
                     </div>
 
                     <div class="mb-2">
