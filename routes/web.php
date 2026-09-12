@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 // Public homepage
 Route::get('/', [PageController::class, 'welcome'])->name('homepage');
 
-Route::middleware('auth')->group(function () {
+Route::group([], function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
