@@ -44,4 +44,9 @@ class ReportController extends Controller
             'reports'
         ));
     }
+
+    public function dashboard()
+    {
+        return view('reports.dashboard');
+    }
 }

@@ -31,6 +31,7 @@ Route::group([], function () {
     Route::get('/items/{item}', [ItemController::class, 'detail'])->name('items.show');
 
     Route::get('/my-reports', [ReportController::class, 'index'])->name('my-reports.index');
+    Route::get('/reports/dashboard', [ReportController::class, 'dashboard'])->name('reports.dashboard');
 
     // Admin
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
