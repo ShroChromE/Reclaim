@@ -1,63 +1,131 @@
-<<<<<<< HEAD
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Reclaim — Sistem Lost & Found Sekolah
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Reclaim adalah aplikasi web berbasis Laravel yang membantu warga sekolah menemukan kembali barang yang hilang. Alih-alih mengandalkan mading fisik atau grup chat yang berantakan, Reclaim mengumpulkan semua laporan barang hilang dan ditemukan dalam satu papan digital yang mudah dicari, sehingga proses pengembalian barang ke pemiliknya menjadi lebih cepat dan terorganisir.
 
-## About Laravel
+## Deskripsi Masalah & Solusi
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Di lingkungan sekolah, barang yang hilang biasanya dilaporkan lewat cara yang tidak terpusat seperti mading, grup WhatsApp kelas, atau dari TU. Cara ini membuat laporan mudah terlewat, sulit dilacak statusnya, dan tidak ada riwayat yang jelas kapan suatu barang akhirnya dikembalikan.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Reclaim menjawab masalah ini dengan:
+- Satu papan terpusat untuk semua laporan barang hilang & ditemukan
+- Pencarian dan filter berdasarkan nama barang, lokasi, atau kategori
+- Riwayat status tiap barang (belum ditemukan -> belum diklaim -> sudah dikembalikan)
+- Panel khusus admin/petugas untuk mengelola barang dan memverifikasi klaim
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Anggota Tim & Peran
 
-## Learning Laravel
+| Nama | Peran |
+|---|---|
+| Owen Christian | Front-End Developer |
+| Kenzo Rivaldo | Front-End Developer |
+| William Tjandera | UI/UX Designer |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Fitur Utama
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Beranda publik** — menampilkan ringkasan jumlah laporan hilang/ditemukan/dikembalikan
+- **Lost & Found** — daftar semua barang dengan pencarian, filter kategori/status, dan tab (Semua, Hilang, Ditemukan, Sudah Dikembalikan)
+- **Detail Barang** — informasi lengkap satu barang (kategori, lokasi, tanggal, waktu, pelapor)
+- **Report Item** — form untuk melaporkan barang hilang atau ditemukan
+- **My Reports & Claims** — daftar laporan dan klaim milik pengguna yang sedang login, lengkap dengan status (Menunggu/Selesai)
+- **Dashboard** — ringkasan aktivitas sistem untuk pengguna umum
+- **Admin Dashboard** — statistik sistem untuk admin (total barang, laporan hilang, grafik aktivitas 7 hari terakhir, status barang)
+- **Manage Items & Claims** *(admin)* — kelola semua barang dan klaim yang masuk dalam satu halaman bertab (Semua Barang, Barang Hilang, Barang Ditemukan, Klaim Masuk)
+- **Autentikasi** — registrasi dan login menggunakan Laravel Breeze
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Teknologi yang Digunakan
 
-## Agentic Development
+- **Backend:** Laravel 13.26.1
+- **Frontend:** Blade Templating, Tailwind CSS
+- **Autentikasi:** Laravel Breeze
+- **Database:** MySQL
+- **Build tool:** Vite
+- **Version control:** Git & GitHub
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Status Proyek
 
+> 📌 Saat ini aplikasi berada pada tahap **tampilan (views) dengan data dummy** — seluruh halaman sudah dapat diakses dan menampilkan desain final, namun belum terhubung ke database sungguhan. Data yang tampil (nama barang, status, dsb.) masih berupa data statis di controller untuk keperluan demonstrasi antarmuka. Migrasi database, model Eloquent, serta autentikasi/otorisasi penuh (role admin vs siswa) menyusul pada tahap berikutnya.
+
+## Instalasi
+
+1. **Clone repository**
+   ```bash
+   git clone https://github.com/ShroChromE/Reclaim.git
+   cd Reclaim
+   ```
+
+2. **Install dependency PHP**
+   ```bash
+   composer install
+   ```
+
+3. **Install dependency JavaScript**
+   ```bash
+   npm install
+   ```
+
+4. **Salin file environment**
+   ```bash
+   cp .env.example .env
+   ```
+
+5. **Generate application key**
+   ```bash
+   php artisan key:generate
+   ```
+
+6. **Konfigurasi database** di file `.env`
+
+   MySQL:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=reclaim
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+7. **Jalankan migrasi**
+   ```bash
+   php artisan migrate
+   ```
+
+8. **Jalankan aplikasi**
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+   composer run dev
 ```
+   Perintah ini otomatis menjalankan server Laravel, Vite (untuk Tailwind CSS), queue listener, dan log viewer sekaligus dalam satu terminal.
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+9. Buka `http://127.0.0.1:8000` di browser.
 
-## Contributing
+## Penggunaan
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. **Registrasi akun** melalui halaman `/register`, atau langsung **login** di `/login` jika sudah punya akun.
+    (Untuk sekarang register masih tidak di enforce karena di routing belum ditambahkan middleware)
+2. Setelah login, gunakan **sidebar** di sisi kiri untuk berpindah antar halaman:
+   - **Lost & Found** — melihat dan mencari semua laporan barang
+   - **Report Item** — melaporkan barang hilang/ditemukan baru
+   - **My Reports & Claims** — melihat laporan dan klaim milik sendiri
+   - **Dashboard** — ringkasan aktivitas
+   - **Detail** - page detail barang (hanya untuk melihat detail page dulu)
+3. Pengguna dengan peran **admin** (role belum diintegrasikan) memiliki akses tambahan ke:
+   - **Admin Dashboard** — statistik dan grafik aktivitas sistem
+   - **Manage Items & Claims** — mengelola seluruh barang dan memverifikasi klaim yang masuk
 
-## Code of Conduct
+## Struktur Route Utama
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Route | Deskripsi |
+|---|---|
+| `/` | Beranda publik |
+| `/login`, `/register` | Autentikasi |
+| `/dashboard` | Dashboard umum |
+| `/items` | Daftar Lost & Found |
+| `/items/create` | Form laporkan barang |
+| `/items/{item}` | Detail barang |
+| `/my-reports` | Laporan & klaim milik pengguna |
+| `/admin/dashboard` | Dashboard admin |
+| `/admin/items` | Kelola barang & klaim |
 
-## Security Vulnerabilities
+## Kontribusi & Alur Kerja Git
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-=======
-# Reclaim
-Sistem sekolah yang bertujuan untuk membantu warga sekolah menemukan barang mereka yang hilang, menerapkan sistem lost &amp; found dalam bentuk sebuah website
->>>>>>> d43f5b77b910c0770c69e06f869a7422b664348b
+Proyek ini menggunakan branch `main` sebagai basis utama, dengan branch terpisah untuk setiap fitur yang sedang dikerjakan. Setiap perubahan dikerjakan pada branch fitur masing-masing sebelum digabungkan ke `main`.
