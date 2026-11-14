@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Item;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -34,17 +32,9 @@ class ItemController extends Controller
         ));
     }
 
-    public function detail()
+    public function detail(Item $item)
     {
-        $item = (object) [
-            'name' => 'Dompet Hitam',
-            'status' => 'Hilang',
-            'category' => 'Dompet',
-            'location' => 'Kelas XII TKJ 3',
-            'date' => '18 Mei 2024',
-            'time' => '10:30 WIB',
-            'reporter' => 'William T.',
-        ];
+        $item->load(['user', 'statusLogs.changedBy']);
 
         return view('items.show', compact('item'));
     }
