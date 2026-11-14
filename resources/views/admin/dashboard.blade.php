@@ -58,11 +58,10 @@
             </div>
 
             <div class="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-6">
-
                 <div class="lg:col-span-2 border border-gray-200 rounded-[0.9375rem] p-6">
                     <h2 class="text-[1.375rem] font-bold text-gray-900 mb-1">Aktivitas Laporan</h2>
+                    {{-- Change graph to items history --}}
                     <p class="text-[0.8125rem] text-gray-500 mb-6">7 Hari Terakhir</p>
-
                     <div class="flex items-end justify-between gap-4 h-[15rem]">
                         @foreach ($weeklyActivity as $percentage)
                             <div class="flex-1 bg-[#EE6D3A] rounded-t-md" style="--h: {{ $percentage }}%; height: var(--h)"></div>
@@ -82,7 +81,6 @@
                         @endforeach
                     </div>
                 </div>
-
             </div>
         </div>
     </main>

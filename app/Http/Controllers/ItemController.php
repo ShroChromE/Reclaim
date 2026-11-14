@@ -3,63 +3,27 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Item;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreItemRequest;
+
 
 class ItemController extends Controller
 {
     public function index(Request $request)
     {
-        $allItems = collect([
-            (object) [
-                'id' => 1,
-                'name' => 'Dompet Kulit Coklat',
-                'type' => 'lost',
-                'location' => 'Perpustakaan Lantai 2',
-                'date' => Carbon::parse('2026-09-01'),
-                'status_label' => 'Belum Ditemukan',
-            ],
-            (object) [
-                'id' => 2,
-                'name' => 'Kunci Motor Honda',
-                'type' => 'found',
-                'location' => 'Parkiran Gedung A',
-                'date' => Carbon::parse('2026-09-03'),
-                'status_label' => 'Menunggu Diambil',
-            ],
-            (object) [
-                'id' => 3,
-                'name' => 'Tas Ransel Hitam',
-                'type' => 'lost',
-                'location' => 'Kantin Kampus',
-                'date' => Carbon::parse('2026-09-05'),
-                'status_label' => 'Dalam Pencarian',
-            ],
-            (object) [
-                'id' => 4,
-                'name' => 'Handphone Samsung',
-                'type' => 'found',
-                'location' => 'Ruang Kelas 301',
-                'date' => Carbon::parse('2026-09-06'),
-                'status_label' => 'Sudah Dikembalikan',
-            ],
-        ]);
+        $items = Item::latest('date')
+            ->latest('id')
+            ->paginate(10)
+            ->withQueryString();
 
-        $perPage = 10;
-        $page = $request->get('page', 1);
-
-        $items = new LengthAwarePaginator(
-            $allItems->forPage($page, $perPage),
-            $allItems->count(),
-            $perPage,
-            $page,
-            ['path' => $request->url(), 'query' => $request->query()]
-        );
-
-        $totalEntries = 4;
-        $lostItems = 1;
-        $foundItems = 2;
-        $returnedItems = 1;
+        $totalEntries  = Item::count();
+        $lostItems     = Item::where('type', 'lost')->count();
+        $foundItems    = Item::where('type', 'found')->count();
+        $returnedItems = Item::where('status', 'resolved')->count();
 
         return view('items.index', compact(
             'items',
@@ -85,16 +49,50 @@ class ItemController extends Controller
         return view('items.show', compact('item'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('items.create');
+        $type = in_array($request->query('type'), Item::TYPES)
+            ? $request->query('type')
+            : 'lost';
+
+        return view('items.create', [
+            'type'       => $type,
+            'categories' => Item::CATEGORIES,
+        ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreItemRequest $request)
     {
-        //
-    }
+        $data = $request->validated();
 
+        DB::transaction(function () use ($request, $data) {
+            $imagePath = $request->hasFile('image')
+                ? $request->file('image')->store('items', 'public')
+                : null;
+
+            $item = Item::create([
+                'user_id'     => Auth::id(),
+                'type'        => $data['type'],
+                'title'       => $data['title'],
+                'description' => $data['description'],
+                'category'    => $data['category'],
+                'location'    => $data['location'],
+                'date'        => $data['date'],
+                'image_path'  => $imagePath,
+                'status'      => 'reported',
+            ]);
+
+            $item->statusLogs()->create([
+                'status'     => 'reported',
+                'changed_by' => Auth::id(),
+                'note'       => 'Laporan dibuat',
+            ]);
+        });
+
+        return redirect()
+            ->route('items.index')
+            ->with('success', 'Laporan berhasil dibuat.');
+    }
     public function edit(string $id)
     {
         return view('items.edit');

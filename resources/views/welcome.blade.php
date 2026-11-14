@@ -31,7 +31,7 @@
 
 
             {{-- NAVIGATION --}}
-            <nav class="w-[532px] h-[60px] bg-[#EFF8F1]
+            <nav class="w-[532px] h-[60px] bg-[#fff8e8]
                        rounded-[15px]
                        flex items-center justify-around px-3">
 
@@ -61,7 +61,7 @@
             {{-- LOGIN / REGISTER --}}
             <div class="flex items-center gap-3">
 
-                <a href="#"
+                <a href="{{ route('login') }}"
                    class="h-[60px] px-6
                           rounded-xl border border-gray-300
                           flex items-center justify-center
@@ -70,7 +70,7 @@
                     Masuk
                 </a>
 
-                <a href="#"
+                <a href="{{ route('register') }}"
                    class="h-[60px] px-6
                           rounded-xl bg-[#EE6D3A]
                           text-white
@@ -132,9 +132,7 @@
                 </p>
 
 
-                {{-- BUTTON --}}
                 <div class="flex items-center gap-[60px] mt-[55px]">
-
                     <a href="#"
                         class="w-[255px] h-[92px]
                         rounded-[24px]
@@ -148,7 +146,6 @@
                         Lapor barang hilang
                     </a>
 
-
                     <a href="#"
                        class="w-[255px] h-[92px]
                               rounded-[24px]
@@ -161,31 +158,23 @@
                               transition">
 
                         Lapor barang Temuan
-
                     </a>
-
                 </div>
-
             </div>
 
-
-            {{-- PAPAN RECLAIM --}}
             <div class="w-full max-w-[710px]
                         min-h-[390px]
-                        bg-[#F1FAF3]
+                        bg-[#fff8e8]
                         rounded-[25px]
                         px-[60px]
                         py-[48px]">
 
-                {{-- HEADER CARD --}}
                 <div class="flex items-center justify-between mb-[45px]">
 
                     <h3 class="text-[25px]
                                font-bold
                                text-[#777E7A]">
-
                         PAPAN RECLAIM
-
                     </h3>
 
                     <span class="text-[23px]
@@ -226,8 +215,6 @@
 
                     </div>
 
-
-                    {{-- DITEMUKAN --}}
                     <div class="h-[70px]
                                 flex items-center justify-between
                                 border-b border-[#ED6D3B]">
