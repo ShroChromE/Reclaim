@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Item;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,36 +13,46 @@ class ItemController extends Controller
 {
     public function index(Request $request)
     {
-        $items = Item::latest('date')
+        $items = Item::query()
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->search;
+
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('location', 'like', "%{$search}%")
+                    ->orWhere('category', 'like', "%{$search}%");
+                });
+            })
+
+            ->when($request->filled('category'), function ($query) use ($request) {
+                $query->where('category', $request->category);
+            })
+            
+            ->when($request->filled('status'), function ($query) use ($request) {
+                if (in_array($request->status, Item::TYPES)) {
+                    $query->where('type', $request->status);
+                } elseif ($request->status === 'returned') {
+                    $query->where('status', 'resolved');
+                }
+            })
+            ->latest('date')
             ->latest('id')
             ->paginate(10)
             ->withQueryString();
 
-        $totalEntries  = Item::count();
-        $lostItems     = Item::where('type', 'lost')->count();
-        $foundItems    = Item::where('type', 'found')->count();
-        $returnedItems = Item::where('status', 'resolved')->count();
-
-        return view('items.index', compact(
-            'items',
-            'totalEntries',
-            'lostItems',
-            'foundItems',
-            'returnedItems'
-        ));
+        return view('items.index', [
+            'items'         => $items,
+            'categories'    => Item::CATEGORIES,
+            'totalEntries'  => Item::count(),
+            'lostItems'     => Item::where('type', 'lost')->count(),
+            'foundItems'    => Item::where('type', 'found')->count(),
+            'returnedItems' => Item::where('status', 'resolved')->count(),
+        ]);
     }
 
-    public function detail()
+    public function detail(Item $item)
     {
-        $item = (object) [
-            'name' => 'Dompet Hitam',
-            'status' => 'Hilang',
-            'category' => 'Dompet',
-            'location' => 'Kelas XII TKJ 3',
-            'date' => '18 Mei 2024',
-            'time' => '10:30 WIB',
-            'reporter' => 'William T.',
-        ];
+        $item->load(['user', 'statusLogs.changedBy']);
 
         return view('items.show', compact('item'));
     }
