@@ -36,18 +36,21 @@
                         class="h-[3.4375rem] rounded-xl border border-gray-200 px-4
                                text-[0.875rem] font-semibold bg-white">
                     <option value="">Semua Kategori</option>
-                    <option value="elektronik">Elektronik</option>
-                    <option value="aksesoris">Aksesoris</option>
-                    <option value="tas">Tas</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category }}"
+                            {{ request('category') === $category ? 'selected' : '' }}>
+                            {{ $category }}
+                        </option>
+                    @endforeach
                 </select>
 
                 <select name="status"
                         class="h-[3.4375rem] rounded-xl border border-gray-200 px-4
                                text-[0.875rem] font-semibold bg-white">
                     <option value="">Semua Status</option>
-                    <option value="lost">Hilang</option>
-                    <option value="found">Ditemukan</option>
-                    <option value="returned">Sudah Dikembalikan</option>
+                    <option value="lost" {{ request('status') === 'lost' ? 'selected' : '' }}>Hilang</option>
+                    <option value="found" {{ request('status') === 'found' ? 'selected' : '' }}>Ditemukan</option>
+                    <option value="returned" {{ request('status') === 'returned' ? 'selected' : '' }}>Sudah Dikembalikan</option>
                 </select>
 
                 <button type="submit"
@@ -105,7 +108,11 @@
                 @endphp
 
                 @foreach ($tabs as $value => $label)
-                    <a href="{{ route('items.index', array_filter(['status' => $value ?: null, 'search' => request('search')])) }}"
+                    <a href="{{ route('items.index', array_filter([
+                            'status' => $value ?: null,
+                            'search' => request('search'),
+                            'category' => request('category'),
+                       ])) }}"
                        class="pb-4 text-[0.9375rem] font-semibold transition
                               {{ request('status', '') === $value
                                     ? 'text-gray-900 border-b-2 border-[#EE6D3A]'
