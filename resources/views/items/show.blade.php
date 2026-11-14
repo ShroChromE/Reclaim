@@ -9,9 +9,14 @@
     <main class="flex-1 min-h-screen flex items-center px-[3.75rem] py-[3.125rem]">
         <div class="w-full max-w-[66.5625rem] mx-auto">
 
+            @if (session('success'))
+                <div class="mb-6 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-green-700">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <div class="grid grid-cols-2 gap-[2.5rem]">
 
-                {{-- FOTO BARANG --}}
                 <div class="h-[35.75rem] bg-[#EFF9F1] rounded-[1.25rem] p-[1.875rem]">
                     <div class="w-full h-[19.1875rem] bg-white rounded-[0.9375rem] overflow-hidden flex items-center justify-center">
                         @if ($item->image_path)
@@ -33,7 +38,6 @@
                     </div>
                 </div>
 
-                {{-- INFO BARANG --}}
                 <div class="h-[35.75rem] border border-gray-300 rounded-[1.25rem] px-[2.5rem] py-[2.5rem] flex flex-col">
                     <div>
                         <h2 class="text-[1.75rem] font-bold text-gray-900">
@@ -82,6 +86,59 @@
                 </div>
 
             </div>
+
+            {{-- UBAH STATUS (ADMIN) --}}
+            @if (auth()->user()?->isAdmin())
+                <div class="mt-[2.5rem] border border-gray-300 rounded-[1.25rem] px-[2.5rem] py-[2.5rem]">
+                    <h3 class="text-[1.125rem] font-bold text-gray-900">Ubah Status</h3>
+
+                    <form action="{{ route('items.status.update', $item) }}" method="POST"
+                          class="mt-6 grid grid-cols-1 md:grid-cols-[1fr_2fr_auto] gap-4 items-start"
+                          data-prevent-double-submit>
+                        @csrf
+
+                        <div>
+                            <label for="status" class="block text-[0.8125rem] font-medium text-gray-700 mb-2">
+                                Status baru
+                            </label>
+                            <select id="status" name="status"
+                                    class="w-full h-[3.4375rem] rounded-lg border border-gray-300 px-4
+                                           text-[0.875rem] focus:border-orange-500 focus:ring-orange-500">
+                                @foreach (\App\Models\Item::STATUS_LABELS as $value => $label)
+                                    <option value="{{ $value }}"
+                                        {{ old('status', $item->status) === $value ? 'selected' : '' }}>
+                                        {{ $label }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('status')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="note" class="block text-[0.8125rem] font-medium text-gray-700 mb-2">
+                                Catatan <span class="text-gray-400">(Opsional)</span>
+                            </label>
+                            <input type="text" id="note" name="note" value="{{ old('note') }}"
+                                   placeholder="Contoh: Diambil oleh pemilik di ruang guru"
+                                   class="w-full h-[3.4375rem] rounded-lg border border-gray-300 px-4
+                                          text-[0.875rem] focus:border-orange-500 focus:ring-orange-500">
+                            @error('note')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="md:pt-[1.7rem]">
+                            <button type="submit"
+                                    class="h-[3.4375rem] px-6 rounded-lg bg-[#EE6D3A] text-white
+                                           text-[0.875rem] font-bold hover:bg-[#DD5F30] transition">
+                                Simpan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            @endif
 
             {{-- RIWAYAT STATUS --}}
             <div class="mt-[2.5rem] border border-gray-300 rounded-[1.25rem] px-[2.5rem] py-[2.5rem]">

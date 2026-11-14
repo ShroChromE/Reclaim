@@ -29,6 +29,7 @@ Route::group([], function () {
     Route::put('/items/{item}', [ItemController::class, 'update'])->name('items.update');
     Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
     Route::get('/items/{item}', [ItemController::class, 'detail'])->name('items.show');
+    Route::post('/items/{item}/status', [ItemController::class, 'updateStatus'])->name('items.status.update');
 
     Route::get('/my-reports', [ReportController::class, 'index'])->name('my-reports.index');
     Route::get('/reports/dashboard', [ReportController::class, 'dashboard'])->name('reports.dashboard');
