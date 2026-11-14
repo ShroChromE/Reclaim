@@ -4,18 +4,18 @@
 
 @section('content')
 
-@if (session('success'))
-    <div class="mb-6 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-green-700">
-        {{ session('success') }}
-    </div>
-@endif
-
 <div class="min-h-screen bg-white flex">
 
     <x-sidebar />
 
     <main class="flex-1 min-h-screen px-[3.75rem] py-[3.125rem]">
         <div class="max-w-[100rem] mx-auto">
+            @if (session('success'))
+                <div class="mb-6 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-green-700">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <h1 class="text-[2.125rem] font-bold text-gray-900">
                 Lost & Found
             </h1>
@@ -33,7 +33,7 @@
                               text-[0.875rem] focus:outline-none focus:ring-2 focus:ring-[#EE6D3A]">
 
                 <select name="category"
-                        class="h-[3.4375rem] rounded-xl border border-gray-200 px-4
+                        class="h-[3.4375rem] min-w-[12rem] rounded-xl border border-gray-200 px-4
                                text-[0.875rem] font-semibold bg-white">
                     <option value="">Semua Kategori</option>
                     @foreach ($categories as $category)

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreItemRequest;
+use App\Http\Requests\UpdateItemStatusRequest;
 
 
 class ItemController extends Controller
@@ -114,5 +115,24 @@ class ItemController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function updateStatus(UpdateItemStatusRequest $request, Item $item)
+    {
+        $data = $request->validated();
+
+        DB::transaction(function () use ($item, $data) {
+            $item->update(['status' => $data['status']]);
+
+            $item->statusLogs()->create([
+                'status'     => $data['status'],
+                'changed_by' => Auth::id(),
+                'note'       => $data['note'] ?? null,
+            ]);
+        });
+
+        return redirect()
+            ->route('items.show', $item)
+            ->with('success', 'Status berhasil diperbarui.');
     }
 }
