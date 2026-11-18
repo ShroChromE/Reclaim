@@ -97,6 +97,29 @@
 
             </div>
 
+            {{-- KATEGORI TERBANYAK --}}
+            @php $maxCategory = $topCategories->max('total') ?: 1; @endphp
+            <div class="mt-8 border border-gray-200 rounded-[0.9375rem] p-6">
+                <h2 class="text-[1.125rem] font-bold text-gray-900">Kategori Terbanyak</h2>
+
+                <div class="mt-5 space-y-5">
+                    @forelse ($topCategories as $row)
+                        <div class="flex items-center gap-5">
+                            <p class="w-28 text-[0.875rem] font-semibold text-gray-900 truncate">
+                                {{ $row->category }}
+                            </p>
+                            <div class="flex-1 h-3 rounded-full bg-gray-100 overflow-hidden">
+                                <div class="h-full rounded-full bg-orange-300"
+                                     style="width: {{ ($row->total / $maxCategory) * 100 }}%;"></div>
+                            </div>
+                            <p class="w-8 text-right text-[0.8125rem] text-gray-500">{{ $row->total }}</p>
+                        </div>
+                    @empty
+                        <p class="text-[0.875rem] text-gray-500">Belum ada data.</p>
+                    @endforelse
+                </div>
+            </div>
+
             <div class="mt-10 flex gap-8 border-b border-gray-200">
                 @php
                     $tabs = [

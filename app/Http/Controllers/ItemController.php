@@ -40,10 +40,17 @@ class ItemController extends Controller
             ->latest('id')
             ->paginate(10)
             ->withQueryString();
+        
+        $topCategories = Item::select('category', DB::raw('count(*) as total'))
+            ->groupBy('category')
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get();
 
         return view('items.index', [
             'items'         => $items,
             'categories'    => Item::CATEGORIES,
+            'topCategories' => $topCategories,
             'totalEntries'  => Item::count(),
             'lostItems'     => Item::where('type', 'lost')->count(),
             'foundItems'    => Item::where('type', 'found')->count(),

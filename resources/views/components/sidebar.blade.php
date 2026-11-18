@@ -46,14 +46,6 @@
                 <p class="text-[0.9375rem] font-semibold">Report Item</p>
                 <p class="text-[0.6875rem] text-gray-400">Laporkan barang hilang / ditemukan</p>
             </a>
-
-            <a href="{{ route('dashboard') }}"
-               class="block px-10 py-3 rounded-xl transition
-                      {{ request()->routeIs('dashboard') ? 'bg-[#303435]' : 'hover:bg-[#303435]' }}">
-                <p class="text-[0.9375rem] font-semibold">Dashboard</p>
-                <p class="text-[0.6875rem] text-gray-400">Dashboard umum</p>
-            </a>
-
         </nav>
 
         {{-- USER + LOGOUT (pinned to the bottom) --}}
