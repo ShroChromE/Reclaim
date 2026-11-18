@@ -41,7 +41,7 @@
                     Cari Barang
                 </a>
 
-                <a href="#"
+                <a href=""
                    class="px-7 py-5 rounded-xl
                           text-[15px] font-semibold text-gray-500
                           hover:text-gray-900 transition">
