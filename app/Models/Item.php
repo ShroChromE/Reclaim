@@ -47,4 +47,9 @@ class Item extends Model
     {
         return Attribute::get(fn () => self::STATUS_LABELS[$this->status] ?? $this->status);
     }
+
+    public function claims(): HasMany
+    {
+        return $this->hasMany(Claim::class)->latest();
+    }
 }
