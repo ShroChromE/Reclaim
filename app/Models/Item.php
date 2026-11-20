@@ -72,4 +72,9 @@ class Item extends Model
             ->where('status', 'pending')
             ->exists();
     }
+
+    public function isManageableBy(?User $user): bool
+    {
+        return $user && ($user->isAdmin() || $this->user_id === $user->id);
+    }
 }

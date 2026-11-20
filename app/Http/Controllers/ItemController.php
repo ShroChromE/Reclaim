@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemStatusRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdateItemRequest;
 
 
 class ItemController extends Controller
@@ -114,19 +115,36 @@ class ItemController extends Controller
             ->route('items.index')
             ->with('success', 'Laporan berhasil dibuat.');
     }
-    public function edit(string $id)
+    public function edit(Item $item)
     {
-        return view('items.edit');
+        abort_unless($item->isManageableBy(Auth::user()), 403);
+        return view('items.edit', [
+            'item'       => $item,
+            'categories' => Item::CATEGORIES,
+        ]);
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateItemRequest $request, Item $item)
     {
-        //
-    }
+        $data = $request->safe()->only(['type', 'title', 'description', 'category', 'location', 'date']);
+        if ($request->hasFile('image')) {
+            if ($item->image_path) {
+                Storage::disk('public')->delete($item->image_path);
+            }
+            $data['image_path'] = $request->file('image')->store('items', 'public');
+        } elseif ($request->boolean('remove_image') && $item->image_path) {
+            Storage::disk('public')->delete($item->image_path);
+            $data['image_path'] = null;
+        }
+        $item->update($data);
+        return redirect()
+            ->route(Auth::user()->isAdmin() ? 'admin.items.index' : 'items.show', $item)
+            ->with('success', 'Barang berhasil diperbarui.');
+}
 
     public function destroy(Item $item)
     {
-        abort_unless(Auth::user()?->isAdmin() || $item->user_id === Auth::id(), 403);
+        abort_unless($item->isManageableBy(Auth::user()), 403);
 
         if ($item->image_path) {
             Storage::disk('public')->delete($item->image_path);

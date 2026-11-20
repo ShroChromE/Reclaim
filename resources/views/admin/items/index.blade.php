@@ -155,7 +155,7 @@
 
                 {{-- DAFTAR BARANG --}}
                 <div class="mt-6">
-                    <div class="grid grid-cols-7 px-2 py-3 text-[0.8125rem] font-semibold text-gray-500 border-b border-gray-200">
+                    <div class="grid grid-cols-[1.3fr_0.8fr_1fr_1fr_1fr_1.1fr_2fr] px-2 py-3 text-[0.8125rem] font-semibold text-gray-500 border-b border-gray-200">
                         <span>Barang</span>
                         <span>Jenis</span>
                         <span>Pelapor</span>
@@ -166,7 +166,7 @@
                     </div>
 
                     @forelse ($items as $item)
-                        <div class="grid grid-cols-7 items-center px-2 py-5 border-b border-gray-100">
+                        <div class="grid grid-cols-[1.3fr_0.8fr_1fr_1fr_1fr_1.1fr_2fr] items-center px-2 py-5 border-b border-gray-100">
                             <span class="text-[0.9375rem] font-bold text-gray-900">
                                 {{ $item->title }}
                             </span>
@@ -191,6 +191,13 @@
                                           flex items-center justify-center text-[0.8125rem] font-semibold
                                           hover:bg-gray-50 transition">
                                     Detail
+                                </a>
+
+                                <a href="{{ route('items.edit', $item) }}"
+                                   class="h-[2.625rem] px-4 rounded-lg border border-gray-300
+                                          flex items-center justify-center text-[0.8125rem] font-semibold
+                                          hover:bg-gray-50 transition">
+                                    Edit
                                 </a>
 
                                 <form action="{{ route('items.destroy', $item) }}" method="POST"
@@ -222,4 +229,4 @@
     </main>
 </div>
 
-@endsection
+@endsections
