@@ -3,69 +3,52 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Claim;
+use App\Models\Item;
 use Illuminate\Http\Request;
 
 class ManageController extends Controller
 {
     public function index(Request $request)
     {
-        $allItems = collect([
-            (object) [
-                'id' => 1,
-                'name' => 'Dompet Hitam',
-                'type' => 'lost',
-                'reporter' => 'William T.',
-                'date' => '18 Mei',
-                'status_label' => 'Belum Ditemukan',
-                'claims_count' => 0,
-            ],
-            (object) [
-                'id' => 2,
-                'name' => 'Botol Minum',
-                'type' => 'found',
-                'reporter' => 'Admin',
-                'date' => '17 Mei',
-                'status_label' => 'Belum Diklaim',
-                'claims_count' => 1,
-            ],
-            (object) [
-                'id' => 3,
-                'name' => 'Tas Ransel',
-                'type' => 'lost',
-                'reporter' => 'Ananda S.',
-                'date' => '16 Mei',
-                'status_label' => 'Belum Ditemukan',
-                'claims_count' => 0,
-            ],
-            (object) [
-                'id' => 4,
-                'name' => 'HP Samsung',
-                'type' => 'found',
-                'reporter' => 'Petugas',
-                'date' => '15 Mei',
-                'status_label' => 'Belum Diklaim',
-                'claims_count' => 2,
-            ],
-            (object) [
-                'id' => 5,
-                'name' => 'Kunci Sepeda',
-                'type' => 'found',
-                'reporter' => 'Petugas',
-                'date' => '14 Mei',
-                'status_label' => 'Sudah Diklaim',
-                'claims_count' => 1,
-            ],
-        ]);
+        $tab = in_array($request->query('tab'), ['all', 'lost', 'found', 'claims'])
+            ? $request->query('tab')
+            : 'all';
 
-        $tab = $request->get('tab', 'all');
+        $search = $request->query('search');
+        $pendingClaims = Claim::where('status', 'pending')->count();
 
-        $items = match ($tab) {
-            'lost' => $allItems->where('type', 'lost')->values(),
-            'found' => $allItems->where('type', 'found')->values(),
-            'claims' => $allItems->where('claims_count', '>', 0)->values(),
-            default => $allItems,
-        };
+        if ($tab === 'claims') {
+            $claims = Claim::with(['item', 'user', 'reviewer'])
+                ->when($search, function ($query) use ($search) {
+                    $query->whereHas('item', fn ($q) => $q->where('title', 'like', "%{$search}%"));
+                })
+                ->orderByRaw("status = 'pending' desc") // pending claims first
+                ->latest()
+                ->paginate(10)
+                ->withQueryString();
 
-        return view('admin.items.index', compact('items', 'tab'));
+            return view('admin.items.index', compact('tab', 'search', 'pendingClaims', 'claims'));
+        }
+
+        $items = Item::with('user')
+            ->withCount([
+                'claims',
+                'claims as pending_claims_count' => fn ($q) => $q->where('status', 'pending'),
+            ])
+            ->when(in_array($tab, Item::TYPES), fn ($q) => $q->where('type', $tab))
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('location', 'like', "%{$search}%")
+                      ->orWhere('category', 'like', "%{$search}%");
+                });
+            })
+            ->latest('date')
+            ->latest('id')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.items.index', compact('tab', 'search', 'pendingClaims', 'items'));
     }
 }
