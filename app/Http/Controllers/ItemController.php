@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemStatusRequest;
+use Illuminate\Support\Facades\Storage;
 
 
 class ItemController extends Controller
@@ -123,9 +124,17 @@ class ItemController extends Controller
         //
     }
 
-    public function destroy(string $id)
+    public function destroy(Item $item)
     {
-        //
+        abort_unless(Auth::user()?->isAdmin() || $item->user_id === Auth::id(), 403);
+
+        if ($item->image_path) {
+            Storage::disk('public')->delete($item->image_path);
+        }
+
+        $item->delete();
+
+        return back()->with('success', 'Barang berhasil dihapus.');
     }
 
     public function updateStatus(UpdateItemStatusRequest $request, Item $item)
@@ -146,4 +155,6 @@ class ItemController extends Controller
             ->route('items.show', $item)
             ->with('success', 'Status berhasil diperbarui.');
     }
+
+    
 }

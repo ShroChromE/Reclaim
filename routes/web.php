@@ -34,10 +34,9 @@ Route::group([], function () {
     Route::get('/my-reports', [ReportController::class, 'index'])->name('my-reports.index');
     Route::get('/reports/dashboard', [ReportController::class, 'dashboard'])->name('reports.dashboard');
 
-    // Admin
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/items', [ManageController::class, 'index'])->name('admin.items.index');
-    Route::patch('/admin/claims/{item}', [ClaimController::class, 'update'])->name('admin.claims.update');
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->middleware('admin')->name('admin.dashboard');
+    Route::get('/admin/items', [ManageController::class, 'index'])->middleware('admin')->name('admin.items.index');
+    Route::patch('/admin/claims/{claim}', [ClaimController::class, 'update'])->middleware('admin')->name('admin.claims.update');
 });
 
 require __DIR__.'/auth.php';
