@@ -52,4 +52,24 @@ class Item extends Model
     {
         return $this->hasMany(Claim::class)->latest();
     }
+
+    public function canBeClaimedBy(?User $user): bool
+    {
+        if (! $user || $this->type !== 'found') {
+            return false;
+        }
+
+        if (in_array($this->status, ['claimed', 'resolved'])) {
+            return false;
+        }
+
+        if ($this->user_id === $user->id) {
+            return false;
+        }
+
+        return ! $this->claims()
+            ->where('user_id', $user->id)
+            ->where('status', 'pending')
+            ->exists();
+    }
 }

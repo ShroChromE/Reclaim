@@ -16,7 +16,6 @@
             @endif
 
             <div class="grid grid-cols-2 gap-[2.5rem]">
-
                 <div class="h-[35.75rem] bg-[#EFF9F1] rounded-[1.25rem] p-[1.875rem]">
                     <div class="w-full h-[19.1875rem] bg-white rounded-[0.9375rem] overflow-hidden flex items-center justify-center">
                         @if ($item->image_path)
@@ -84,10 +83,63 @@
                         </a>
                     </div>
                 </div>
-
             </div>
 
-            {{-- UBAH STATUS (ADMIN) --}}
+            @if ($myClaim)
+                @php
+                    $claimStyles = [
+                        'pending'  => 'bg-orange-50 border-orange-200 text-orange-700',
+                        'approved' => 'bg-green-50 border-green-200 text-green-700',
+                        'rejected' => 'bg-red-50 border-red-200 text-red-700',
+                    ];
+                @endphp
+                <div class="mt-[2.5rem] rounded-[1.25rem] border px-[2.5rem] py-[1.5rem] {{ $claimStyles[$myClaim->status] ?? '' }}">
+                    <p class="text-[0.9375rem] font-bold">
+                        Klaim kamu: {{ \App\Models\Claim::STATUS_LABELS[$myClaim->status] ?? $myClaim->status }}
+                    </p>
+                    @if ($myClaim->status === 'pending')
+                        <p class="mt-1 text-[0.8125rem]">Klaim kamu sedang menunggu verifikasi admin.</p>
+                    @endif
+                    @if ($myClaim->admin_note)
+                        <p class="mt-1 text-[0.8125rem]">Catatan admin: {{ $myClaim->admin_note }}</p>
+                    @endif
+                </div>
+            @endif
+
+            @if ($item->canBeClaimedBy(auth()->user()))
+                <div class="mt-[2.5rem] border border-gray-300 rounded-[1.25rem] px-[2.5rem] py-[2.5rem]">
+                    <h3 class="text-[1.125rem] font-bold text-gray-900">Ajukan Klaim</h3>
+                    <p class="mt-1 text-[0.8125rem] text-gray-500">
+                        Ini barang kamu? Jelaskan ciri-ciri yang hanya pemilik yang tahu agar admin bisa memverifikasi.
+                    </p>
+
+                    <form action="{{ route('items.claims.store', $item) }}" method="POST"
+                          class="mt-6" data-prevent-double-submit>
+                        @csrf
+
+                        <label for="proof" class="block text-[0.8125rem] font-medium text-gray-700 mb-2">
+                            Bukti kepemilikan
+                        </label>
+                        <textarea id="proof" name="proof" rows="4"
+                                  placeholder="Contoh: Ada stiker bintang di bagian dalam, isi dompet kartu pelajar atas nama saya..."
+                                  class="w-full rounded-lg border border-gray-300 px-4 py-3 text-[0.875rem]
+                                         focus:border-orange-500 focus:ring-orange-500"
+                                  required>{{ old('proof') }}</textarea>
+                        @error('proof')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+
+                        <div class="mt-4 flex justify-end">
+                            <button type="submit"
+                                    class="h-[3.4375rem] px-6 rounded-lg bg-[#EE6D3A] text-white
+                                           text-[0.875rem] font-bold hover:bg-[#DD5F30] transition">
+                                Kirim Klaim
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            @endif
+
             @if (auth()->user()?->isAdmin())
                 <div class="mt-[2.5rem] border border-gray-300 rounded-[1.25rem] px-[2.5rem] py-[2.5rem]">
                     <h3 class="text-[1.125rem] font-bold text-gray-900">Ubah Status</h3>
@@ -140,7 +192,6 @@
                 </div>
             @endif
 
-            {{-- RIWAYAT STATUS --}}
             <div class="mt-[2.5rem] border border-gray-300 rounded-[1.25rem] px-[2.5rem] py-[2.5rem]">
                 <h3 class="text-[1.125rem] font-bold text-gray-900">Riwayat Status</h3>
 

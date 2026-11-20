@@ -1,14 +1,9 @@
 @extends('layouts.app')
-
 @section('title', 'Reclaim - Lost & Found')
-
 @section('content')
 
-{{-- Seluruh halaman dikunci setinggi layar (dvh). Ukuran teks/tombol/kartu
-     memakai clamp() berbasis vh/vw supaya mengecil otomatis dan muat tanpa scroll. --}}
 <div class="h-dvh flex flex-col overflow-y-auto">
 
-    {{-- HEADER: logo + tombol masuk/daftar --}}
     <header class="shrink-0 border-b border-gray-200">
         <div class="h-[clamp(60px,10vh,100px)] px-4 sm:px-8 lg:px-10 flex items-center justify-between gap-3">
 
