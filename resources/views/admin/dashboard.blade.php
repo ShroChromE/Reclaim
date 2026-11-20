@@ -60,26 +60,62 @@
             <div class="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-2 border border-gray-200 rounded-[0.9375rem] p-6">
                     <h2 class="text-[1.375rem] font-bold text-gray-900 mb-1">Aktivitas Laporan</h2>
-                    {{-- Change graph to items history --}}
-                    <p class="text-[0.8125rem] text-gray-500 mb-6">7 Hari Terakhir</p>
-                    <div class="flex items-end justify-between gap-4 h-[15rem]">
-                        @foreach ($weeklyActivity as $percentage)
-                            <div class="flex-1 bg-[#EE6D3A] rounded-t-md" style="--h: {{ $percentage }}%; height: var(--h)"></div>
-                        @endforeach
+                    <p class="text-[0.8125rem] text-gray-500 mb-6">Barang hilang dan ditemukan, 30 hari terakhir</p>
+                    <div class="h-[15rem]">
+                        <canvas id="chart-reports" data-chart="{{ json_encode($reportsChart) }}"></canvas>
                     </div>
                 </div>
 
                 <div class="border border-gray-200 rounded-[0.9375rem] p-6">
                     <h2 class="text-[1.375rem] font-bold text-gray-900 mb-6">Status Barang</h2>
 
+                    @php $maxStatus = max($statusBarang) ?: 1; @endphp
+
                     <div class="space-y-5">
                         @foreach ($statusBarang as $label => $count)
-                            <div class="flex items-center justify-between pb-5 border-b border-gray-100 last:border-b-0 last:pb-0">
-                                <span class="text-[0.9375rem] font-semibold text-gray-900">{{ $label }}</span>
-                                <span class="text-[1.5rem] font-bold text-gray-900">{{ $count }}</span>
+                            <div class="pb-5 border-b border-gray-100 last:border-b-0 last:pb-0">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[0.9375rem] font-semibold text-gray-900">{{ $label }}</span>
+                                    <span class="text-[1.5rem] font-bold text-gray-900">{{ $count }}</span>
+                                </div>
+                                <div class="mt-2 h-2 rounded-full bg-gray-100 overflow-hidden">
+                                    <div class="h-full rounded-full bg-[#EE6D3A]"
+                                         style="width: {{ ($count / $maxStatus) * 100 }}%;"></div>
+                                </div>
                             </div>
                         @endforeach
                     </div>
+                </div>
+            </div>
+
+            {{-- KLAIM MENUNGGU --}}
+            <div class="mt-10 border border-gray-200 rounded-[0.9375rem] p-6">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-[1.375rem] font-bold text-gray-900">Klaim Menunggu Verifikasi</h2>
+                    <a href="{{ route('admin.items.index', ['tab' => 'claims']) }}"
+                       class="text-[0.875rem] font-semibold text-[#EE6D3A] hover:underline">
+                        Lihat semua
+                    </a>
+                </div>
+
+                <div class="mt-4">
+                    @forelse ($latestClaims as $claim)
+                        <div class="grid grid-cols-[2fr_2fr_1fr_auto] items-center gap-4 py-4 border-b border-gray-100 last:border-b-0">
+                            <p class="text-[0.875rem] font-bold text-gray-900">{{ $claim->item->title }}</p>
+                            <p class="text-[0.875rem] text-gray-700">{{ $claim->user->name }}</p>
+                            <p class="text-[0.8125rem] text-gray-500">{{ $claim->created_at->diffForHumans() }}</p>
+                            <a href="{{ route('admin.items.index', ['tab' => 'claims']) }}"
+                               class="h-[2.625rem] px-4 rounded-lg border border-gray-300
+                                      flex items-center justify-center text-[0.8125rem] font-semibold
+                                      hover:bg-gray-50 transition">
+                                Tinjau
+                            </a>
+                        </div>
+                    @empty
+                        <p class="py-6 text-center text-gray-500 text-[0.875rem]">
+                            Tidak ada klaim yang menunggu.
+                        </p>
+                    @endforelse
                 </div>
             </div>
         </div>
