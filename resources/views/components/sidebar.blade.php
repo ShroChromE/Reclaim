@@ -48,7 +48,6 @@
             </a>
         </nav>
 
-        {{-- USER + LOGOUT (pinned to the bottom) --}}
         @auth
             <div class="mt-auto pt-6 border-t border-[#303435]">
                 <div class="px-3 pb-4">
@@ -66,6 +65,5 @@
                 </form>
             </div>
         @endauth
-
     </div>
 </aside>

@@ -4,10 +4,12 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ItemClaimController;
 use App\Http\Controllers\Admin\ManageController;
 use App\Http\Controllers\Admin\ClaimController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use Illuminate\Support\Facades\Route;
+
 
 // Public homepage
 Route::get('/', [PageController::class, 'welcome'])->name('homepage');
@@ -27,6 +29,7 @@ Route::group([], function () {
     Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
     Route::get('/items/{item}', [ItemController::class, 'detail'])->name('items.show');
     Route::post('/items/{item}/status', [ItemController::class, 'updateStatus'])->name('items.status.update');
+    Route::post('/items/{item}/claims', [ItemClaimController::class, 'store'])->name('items.claims.store');
 
     Route::get('/my-reports', [ReportController::class, 'index'])->name('my-reports.index');
     Route::get('/reports/dashboard', [ReportController::class, 'dashboard'])->name('reports.dashboard');

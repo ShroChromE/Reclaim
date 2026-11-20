@@ -62,7 +62,11 @@ class ItemController extends Controller
     {
         $item->load(['user', 'statusLogs.changedBy']);
 
-        return view('items.show', compact('item'));
+        $myClaim = Auth::check()
+            ? $item->claims()->where('user_id', Auth::id())->first()
+            : null;
+
+        return view('items.show', compact('item', 'myClaim'));
     }
 
     public function create(Request $request)
